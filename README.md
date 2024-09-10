@@ -312,21 +312,23 @@ car_variance
 - Middlewares
     - AuthenticationMiddleware
     - ErrorHandleMiddleware
-    - NotFoundMiddleware
-- API Controller (Handling request, error handling, logging)
+    - RouteNotFoundMiddleware
+- Controllers (Handling request, error handling, logging)
     - AuthenticationController
     - UserController
     - CarController
 - Business Logic Layer (data procession)
-    - create JWT token
-    - isValidToken
+    - AuthenticationLogic (create JWT token, isValidToken)
+    - CarLogic
+    - UserLogic
 - Data Access Layer (database connection)
-- Errors (customized errors)
+- CustomErrors
     - index.js (you can import all errors from this file)
-    - CustomedError
+    - CustomError
     - BadRequestError
     - NotFoundError
     - UnauthenticatedError
+    - InternalServerError
 - Models (perform validation)
     - User
     - Car
