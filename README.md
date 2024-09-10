@@ -20,7 +20,7 @@
 ## Technology Used
 - Authentication: JWT
 - Backend: Node.js, Express.js
-- Database: MySQL
+- Database: MongoDB
 - Database first approach
 - Documentation: Swagger
 - Password Encryption: bcryptjs
@@ -55,7 +55,7 @@ API URL: `https://localhost:7046/api`
 ### Register
 Description: To sign up.
 
-API End Point: `POST /api/signup`
+API End Point: `POST /signup`
 
 Request Header:
 ```
@@ -93,7 +93,7 @@ Status Code `403 Forbidden`
 ### Login
 Description: To login.
 
-API End Point: `POST /api/session/login`
+API End Point: `POST /session/login`
 
 Request Header:
 ```
@@ -130,7 +130,7 @@ Status Code `403 Forbidden`
 ### Logout
 Description: Check Bearer token and logout.
 
-API End Point: `POST /api/session/logout`
+API End Point: `POST /session/logout`
 
 Request Header:
 ```
@@ -158,7 +158,7 @@ Status Code `403 Forbidden`
 ### Get Profile
 Description: To get user profile by token.
 
-API End Point: `POST /api/getprofile`
+API End Point: `POST /getprofile`
 
 Request Header:
 ```
@@ -194,7 +194,7 @@ Status Code `403 Forbidden`
 ### Update Profile
 Description: To update user profile by token.
 
-API End Point: `POST /api/updatemyprofile`
+API End Point: `POST /updatemyprofile`
 
 Request Header:
 ```
@@ -231,7 +231,7 @@ Status Code `403 Forbidden`
 ### Get List of Cars
 Description: Validate brearer and get car lists with pagination and wildcard search
 
-API End Point: `POST /api/getcarlist`
+API End Point: `POST /getcarlist`
 
 Request Header:
 ```
@@ -286,10 +286,10 @@ Status Code `403 Forbidden`
 user
 - id: char(36) (PK) // uuid
 - username: varchar(100) (not null, unique)
-- display_username: varchar(500) (not null)
+- displayUsername: varchar(500) (not null)
 - password: varchar(50) (not null)
-- created_at: DateTime // UTC format
-- updated_at: DateTime // UTC format
+- createdAt: DateTime // UTC format
+- updatedAt: DateTime // UTC format
 
 car
 - id: char(36) (PK)
@@ -301,7 +301,7 @@ car_variance
 - id: char(36) (PK)
 - name: varchar(150) (not null, unique)
 - price: decimal(6,0) (not null)
-- car_id: char(36) (FK) (not null)
+- carId: char(36) (FK) (not null)
 
 ## Architecture Design - Three Layer Architecture
 - app.js (program start from here)

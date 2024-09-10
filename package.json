@@ -1,8 +1,30 @@
 {
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
   "dependencies": {
-    "mysql2": "^3.11.0"
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.20.0",
+    "express-async-errors": "^3.1.1",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose-timestamp": "^0.6.0",
+    "mysql2": "^3.11.0",
+    "nodemon": "^3.1.4",
+    "swagger-ui-express": "^5.0.1",
+    "xss-clean": "^0.1.4",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "^9.10.0"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
