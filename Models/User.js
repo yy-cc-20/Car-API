@@ -41,24 +41,14 @@ userSchema.plugin(timestamps, {
     }
 });
 
+userSchema.comparePassword = async function (canditatePassword) {
+    const isMatch = await bcrypt.compare(canditatePassword, this.password)
+    return isMatch
+}
+
 userSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)
 })
-
-userSchema.methods.createJWT = function () {
-    return jwt.sign(
-        { userId: this._id, name: this.name },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: process.env.JWT_LIFETIME,
-        }
-    )
-}
-
-userSchema.methods.comparePassword = async function (canditatePassword) {
-    const isMatch = await bcrypt.compare(canditatePassword, this.password)
-    return isMatch
-}
 
 module.exports = mongoose.model('User', userSchema)

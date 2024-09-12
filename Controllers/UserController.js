@@ -1,46 +1,24 @@
-const Job = require('../models/Job')
+const { getUserProfileService, updateUserProfileService } = require('../Services/UserService')
 const { StatusCodes } = require('http-status-codes')
-const { BadRequestError, NotFoundError } = require('../errors')
 
-const getJob = async (req, res) => {
-    const {
-        user: { userId }, // from req.user.userId
-        params: { id: jobId }, // from url param, give alias
-    } = req
+const getUserProfile = async (req, res) => {
+    const { user: { userId } } = req;
 
-    const job = await Job.findOne({
-        _id: jobId,
-        createdBy: userId,
-    })
-    if (!job) {
-        throw new NotFoundError(`No job with id ${jobId}`)
-    }
-    res.status(StatusCodes.OK).json({ job })
+    userProfileDTO = getUserProfileService(userId);
+    console.log(`${timestamp} Get user profile for user ${userId}`)
+    res.status(StatusCodes.OK).json(userProfileDTO);
 }
 
+const updateUserProfile = async (req, res) => {
+    const { user: { userId } } = req;
+    const { displayusername, timestamp } = req.body;
 
-const updateJob = async (req, res) => {
-    const {
-        body: { company, position },
-        user: { userId },
-        params: { id: jobId },
-    } = req
-
-    if (company === '' || position === '') {
-        throw new BadRequestError('Company or Position fields cannot be empty')
-    }
-    const job = await Job.findByIdAndUpdate(
-        { _id: jobId, createdBy: userId },
-        req.body,
-        { new: true, runValidators: true }
-    )
-    if (!job) {
-        throw new NotFoundError(`No job with id ${jobId}`)
-    }
-    res.status(StatusCodes.OK).json({ job })
+    updatedUserProfileDTO = updateUserProfileService(userId, displayusername)
+    console.log(`${timestamp} Updated display username '${displayusername}'`)
+    res.status(StatusCodes.OK).json(updateUserProfileDTO);    
 }
-
 
 module.exports = {
-    getCarList
+    getUserProfile,
+    updateUserProfile
 }

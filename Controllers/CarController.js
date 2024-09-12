@@ -1,12 +1,16 @@
-const Job = require('../models/Job')
+const { getCarListWithSearchingAndPagingService } = require('../Services/CarService')
 const { StatusCodes } = require('http-status-codes')
-const { BadRequestError, NotFoundError } = require('../errors')
 
-const getAllJobs = async (req, res) => {
-    const jobs = await Job.find({ createdBy: req.user.userId }).populate('foreign key').sort('createdAt')
-    res.status(StatusCodes.OK).json({ jobs, count: jobs.length })
+const getCarListWithSearchingAndPaging = async (req, res) => {
+    const { carname, pageindex, pagesize, timestamp } = req.body;
+
+    carList = getCarListWithSearchingAndPagingService(carname, pageindex, pagesize);
+
+    console.log(`${timestamp} Get car list`)
+
+    res.status(StatusCodes.OK).json(carList);
 }
 
 module.exports = {
-    getCarList
+    getCarListWithSearchingAndPaging
 }

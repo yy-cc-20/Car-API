@@ -1,31 +1,20 @@
-const User = require('../models/User')
 const { StatusCodes } = require('http-status-codes')
-const { BadRequestError, UnauthenticatedError } = require('../errors')
+const { registerUserService } = require('../Services/AuthenticationService')
 
 const register = async (req, res) => {
-    const user = await User.create({ ...req.body }) // throw error if not valid   
-    const token = user.createJWT()
-    console.log("User is registered.")
-    res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token })
+    const { password, username, displayusername, timestamp } = req.body;
+
+    const userDTOAndToken = registerUserService(password, username, displayusername, timestamp);
+    console.log(`${timestamp} User ${userDTOAndToken.userid} is registered`)
+    res.status(StatusCodes.CREATED).json(userDTOAndToken)
 }
 
 const login = async (req, res) => {
-    const { email, password } = req.body
+    const { username, timestamp, password } = req.body
 
-    if (!email || !password) {
-        throw new BadRequestError('Please provide email and password')
-    }
-    const user = await User.findOne({ email })
-    if (!user) {
-        throw new UnauthenticatedError('Invalid Credentials')
-    }
-    const isPasswordCorrect = await user.comparePassword(password)
-    if (!isPasswordCorrect) {
-        throw new UnauthenticatedError('Invalid Credentials')
-    }
-    // compare password
-    const token = user.createJWT()
-    res.status(StatusCodes.OK).json({ user: { name: user.name }, token })
+    const userDTOAndToken = loginUserService(username, password);
+    console.log(`${timestamp} User ${userDTOAndToken.userid} is logined`)
+    res.status(StatusCodes.OK).json(userDTOAndToken)
 }
 
 const logout = async (req, res) => {
@@ -35,7 +24,7 @@ const logout = async (req, res) => {
             return res.status(500).send({ message: 'Error logging out' });
         }
         // Remove the user's token from the database or cache
-        await removeUserToken(req.user.id);
+        //await removeUserToken(req.user.id);
         res.clearCookie('sessionToken');
         res.status(200).send({ message: 'Logged out successfully' });
     });

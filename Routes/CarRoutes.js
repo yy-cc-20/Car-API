@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const {	getCarList } = require('../Controllers/CarController')
+const { getCarListWithSearchingAndPaging } = require('../Controllers/CarController')
 
-router.route('/getcarlist').post(getCarList)
+router.route('/getcarlist').post(getCarListWithSearchingAndPaging)
 
 module.exports = router
