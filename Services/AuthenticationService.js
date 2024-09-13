@@ -1,9 +1,10 @@
 const User = require('../Models/User')
 const { BadRequestError, UnauthenticatedError } = require('../CustomErrors')
+const JWTToken = require('../Models/JWTToken')
 
 function registerUserService(password, username, displayUsername, createdAt) {
     user = await User.create({ password, username, displayUsername, createdAt })
-    const token = createJWTToken(user._id)
+    const token = JWTToken.generateToken(user._id)
     return { token, displayUsername, userid };
 }
 
@@ -19,19 +20,16 @@ function loginService(username, password) {
     if (!isPasswordCorrect) {
         throw new UnauthenticatedError('Invalid Credentials')
     }
-    const token = createJWTToken(user._id)
+    const token = JWTToken.generateToken(user._id)
     return { token: token, displayusername: user.displayUsername, userid: user._id }
 }
-    
-function createJWTToken(userId) {
-    return jwt.sign(
-        { userId: userId },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_LIFETIME }
-    )
+
+function logoutService(token) {
+    JWTToken.blacklistToken(token);
 }
 
 module.exports = {
     registerUserService,
-    loginService
+    loginService,
+    logoutService
 }

@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes')
-const { registerUserService } = require('../Services/AuthenticationService')
+const { registerUserService, loginService, logoutService } = require('../Services/AuthenticationService')
 
 const register = async (req, res) => {
     const { password, username, displayusername, timestamp } = req.body;
@@ -12,22 +12,15 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { username, timestamp, password } = req.body
 
-    const userDTOAndToken = loginUserService(username, password);
+    const userDTOAndToken = loginService(username, password);
     console.log(`${timestamp} User ${userDTOAndToken.userid} is logined`)
     res.status(StatusCodes.OK).json(userDTOAndToken)
 }
 
 const logout = async (req, res) => {
-    // Invalidate the user's session
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).send({ message: 'Error logging out' });
-        }
-        // Remove the user's token from the database or cache
-        //await removeUserToken(req.user.id);
-        res.clearCookie('sessionToken');
-        res.status(200).send({ message: 'Logged out successfully' });
-    });
+    const token = req.headers.authorization.split(' ')[1]
+    logoutService(token)
+    res.status(StatusCodes.OK);
 };
 
 module.exports = {
