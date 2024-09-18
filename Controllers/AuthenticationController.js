@@ -4,15 +4,16 @@ const { registerUserService, loginService, logoutService } = require('../Service
 const register = async (req, res) => {
     const { password, username, displayusername, timestamp } = req.body;
 
-    const userDTOAndToken = registerUserService(password, username, displayusername, timestamp);
+    const userDTOAndToken = await registerUserService(password, username, displayusername, timestamp);
     console.log(`${timestamp} User ${userDTOAndToken.userid} is registered`)
+    
     res.status(StatusCodes.CREATED).json(userDTOAndToken)
 }
 
 const login = async (req, res) => {
     const { username, timestamp, password } = req.body
 
-    const userDTOAndToken = loginService(username, password);
+    const userDTOAndToken = await loginService(username, password);
     console.log(`${timestamp} User ${userDTOAndToken.userid} is logined`)
     res.status(StatusCodes.OK).json(userDTOAndToken)
 }
@@ -20,6 +21,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     logoutService(token)
+    console.log(`${timestamp} User ${req.userId} is logout`)
     res.status(StatusCodes.OK);
 };
 

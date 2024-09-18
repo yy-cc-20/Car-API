@@ -1,6 +1,4 @@
 const Car = require('../Models/Car')
-const CarVariance = require('../Models/CarVariance')
-const { BadRequestError, NotFoundError } = require('../CustomErrors')
 
 async function getCarListWithSearchingAndPagingService(carname, pageindex, pagesize) {
     const queryObject = {};

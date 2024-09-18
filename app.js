@@ -8,16 +8,16 @@ const xss = require('xss-clean'); // prevent inject malicious code
 const rateLimiter = require('express-rate-limit'); // 
 
 // Swagger
-const swaggerUI = require('swagger-ui-express');
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./swagger.yaml');
+//const swaggerUI = require('swagger-ui-express');
+//const YAML = require('yamljs');
+//const swaggerDocument = YAML.load('./swagger.yaml');
 
 // Express framework
 const express = require('express');
 const app = express();
 
 // Database
-const connectDB = require('./DatabaseConnection');
+const mongoose = require('mongoose')
 
 // routers
 const authenticationRouter = require('./Routes/AuthenticationRoutes');
@@ -44,7 +44,10 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
-app.get('/', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+//app.get('/', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.get('/', (req, res) => {
+    res.send('<h1>Car API</h1>');
+});
 
 // routes
 app.use('/api/', authenticationRouter);
@@ -56,11 +59,20 @@ app.use(errorHandleMiddleware);
 
 const port = process.env.PORT || 5000;
 
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+mongoose.connection.once('open', () => {
+    console.log('Connected to MongoDB');
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+});
+
 const start = async () => {
     try {
-        await connectDB(process.env.MONGO_DB_URI);
+        await mongoose.connect(process.env.MONGO_DB_URI);
         app.listen(port, () =>
-            console.log(`Server is listening on port ${port}...`)
+            console.log(`Server is listening on http://localhost:${port}...`)
         );
     } catch (error) {
         console.log(error);

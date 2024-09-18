@@ -10,33 +10,32 @@ const JWTTokenSchema = new mongoose.Schema({
     },
 })
 
-JWTTokenSchema.generateToken = async function (userId) {
-    return jwt.sign(
+JWTTokenSchema.statics.generateToken = async function (userId) {
+    token = jwt.sign(
         { userId: userId },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_LIFETIME }
     )
+
+    //console.log(token)
+    return token;
 }
 
-JWTTokenSchema.blacklistToken = async function (token) {
-    const existingToken = await Token.findOne({ token });
+JWTTokenSchema.statics.blacklistToken = async function (token) {
+    console.log(token)
+    const existingToken = await this.findOneOrSkip({ token });
     if (!existingToken) {
         await new Token({ token }).save();
     }
 }
 
-JWTTokenSchema.decodingToken = async function (token) {
-    const blacklistedToken = await Token.findOne({ token });
-    if (blacklistedToken) {
-        throw new UnauthenticatedError('Token has been revoked');
-    }
-
+JWTTokenSchema.statics.decoding = async function (token) {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = await jwt.verify(token, process.env.JWT_SECRET);
         return decoded.userId
     } catch (error) {
         throw new UnauthenticatedError('Invalid token');
     }
 }
 
-module.exports = mongoose.model('BlacklistedJWTToken', JWTTokenSchema)
+module.exports = mongoose.model('JWTToken', JWTTokenSchema)

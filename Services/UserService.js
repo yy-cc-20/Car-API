@@ -1,7 +1,7 @@
 const User = require('../Models/User');
-const { BadRequestError, NotFoundError } = require('../CustomErrors')
+const { NotFoundError } = require('../CustomErrors')
 
-function getUserProfileService(userId) {
+async function getUserProfileService(userId) {
     const user = await User.findOne({
         _id: userId,
     })
@@ -12,7 +12,7 @@ function getUserProfileService(userId) {
     return toUserProfileDTO(user);
 }
 
-function updateUserProfileService(userId, displayUsername) {
+async function updateUserProfileService(userId, displayUsername) {
     const user = await User.findByIdAndUpdate(
         { _id: userId },
         { displayUsername: displayUsername },
@@ -22,7 +22,7 @@ function updateUserProfileService(userId, displayUsername) {
     return toUserProfileDTO(user);
 }
 
-function toUserProfileDTO(user) {
+async function toUserProfileDTO(user) {
     return {
         username: user.username,
         displayusername: user.displayusername,

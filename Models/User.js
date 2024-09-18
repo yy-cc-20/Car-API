@@ -1,13 +1,11 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 const uuid = require('uuid');
 const timestamps = require('mongoose-timestamp');
 
 const userSchema = new mongoose.Schema({
     _id: {
         type: String,
-        index: true,
         default: uuid.v4
     },
     username: {
@@ -41,7 +39,7 @@ userSchema.plugin(timestamps, {
     }
 });
 
-userSchema.comparePassword = async function (canditatePassword) {
+userSchema.methods.comparePassword = async function (canditatePassword) {
     const isMatch = await bcrypt.compare(canditatePassword, this.password)
     return isMatch
 }

@@ -1,4 +1,3 @@
-const User = require('../Models/User')
 const JWTToken = require('../Models/JWTToken')
 const { UnauthenticatedError } = require('../CustomErrors')
 
@@ -8,10 +7,10 @@ const auth = async (req, res, next) => {
     if (!authHeader || !authHeader.startsWith('Bearer')) {
         throw new UnauthenticatedError('Authentication invalid')
     }
-    const token = authHeader.split(' ')[1]
 
+    const token = authHeader.split(' ')[1]
     try {
-        const userId = JWTToken.decoding(token)
+        const userId = await JWTToken.decoding(token)
         req.userId = userId
         next()
     } catch (error) {

@@ -15,25 +15,20 @@
 - Get Profile
 - Update Profile
 - Get List Of Cars (Paging & Wildcard Search)
-- Logging
 
 ## Technology Used
 - Authentication: JWT
 - Backend: Node.js, Express.js
 - Database: MongoDB
-- Database first approach
-- Documentation: Swagger
 - Password Encryption: bcryptjs
 - Deployment: Docker
 - Three Layer Architecture
 
 ## Installation
-Create Database
-- Find the database migration files at `./Database_Migration` directory
-- Run the sql script to create database 'car' in mysql database
-- Run the sql script to insert sample data into the database
-- Open `.env.example` to change mysql connection string to connect your mysql database
+Add `.env` file
 - Change the filename `.env.example` to `.env`
+- Open `.env` to add mongo db connection string to connect your database
+- Open `.env` and add JWT Secret
 
 Install Required Package
 ```
@@ -313,23 +308,20 @@ car_variance
     - AuthenticationMiddleware
     - ErrorHandleMiddleware
     - RouteNotFoundMiddleware
-- Controllers (Handling request, error handling, logging)
+- Controllers
     - AuthenticationController
     - UserController
     - CarController
-- Business Logic Layer (data procession)
-    - AuthenticationLogic (create JWT token, isValidToken)
-    - CarLogic
-    - UserLogic
-- Data Access Layer (database connection)
+- Service Layer
+    - AuthenticationService
+    - CarService
+    - UserService
 - CustomErrors
-    - index.js (you can import all errors from this file)
+    - index.js (import all errors from this file)
     - CustomError
     - BadRequestError
     - NotFoundError
     - UnauthenticatedError
-    - InternalServerError
 - Models (perform validation)
     - User
     - Car
-    - CarVariance

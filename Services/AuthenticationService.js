@@ -2,13 +2,13 @@ const User = require('../Models/User')
 const { BadRequestError, UnauthenticatedError } = require('../CustomErrors')
 const JWTToken = require('../Models/JWTToken')
 
-function registerUserService(password, username, displayUsername, createdAt) {
+async function registerUserService(password, username, displayUsername, createdAt) {
     user = await User.create({ password, username, displayUsername, createdAt })
-    const token = JWTToken.generateToken(user._id)
-    return { token, displayUsername, userid };
+    const token = await JWTToken.generateToken(user._id)
+    return { token, displayUsername, userid: user._id };
 }
 
-function loginService(username, password) {
+async function loginService(username, password) {
     if (!username || !password) {
         throw new BadRequestError('Please provide email and password')
     }
@@ -20,11 +20,15 @@ function loginService(username, password) {
     if (!isPasswordCorrect) {
         throw new UnauthenticatedError('Invalid Credentials')
     }
-    const token = JWTToken.generateToken(user._id)
+    const token = await JWTToken.generateToken(user._id)
     return { token: token, displayusername: user.displayUsername, userid: user._id }
 }
 
 function logoutService(token) {
+    const blacklistedToken = JWTToken.findOne({ token });
+    if (blacklistedToken) {
+        throw new UnauthenticatedError('Token has been revoked');
+    }
     JWTToken.blacklistToken(token);
 }
 
