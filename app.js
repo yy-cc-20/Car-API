@@ -63,10 +63,6 @@ mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB');
 });
 
-process.on('uncaughtException', (err) => {
-    console.error('Uncaught Exception:', err);
-});
-
 const start = async () => {
     try {
         await mongoose.connect(process.env.MONGO_DB_URL);
