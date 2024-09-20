@@ -317,16 +317,16 @@ car_variance
     - AuthenticationController
     - UserController
     - CarController
-- Service Layer
+- Services
     - AuthenticationService
     - CarService
     - UserService
 - CustomErrors
-    - index.js (import all errors from this file)
+    - index.js (access all errors from this file)
     - CustomError
     - BadRequestError
     - NotFoundError
     - UnauthenticatedError
-- Models (perform validation)
+- Models (validation)
     - User
     - Car
