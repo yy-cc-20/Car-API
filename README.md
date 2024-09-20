@@ -4,8 +4,8 @@
 - [Features](#features)
 - [Technology Used](#technology-used)
 - [Installation](#installation)
-- [API Endpoints](#api-endpoints)
 - [Database Design](#database-design)
+- [API Endpoints](#api-endpoints)
 - [Architecture Design](#architecture-design)
 
 ## Features
@@ -52,6 +52,28 @@ npm run dev
 
 API URL: `https://localhost:7046/api`
  
+## Database Design
+user
+- id: char(36) (PK) // uuid
+- username: varchar(100) (not null, unique)
+- displayUsername: varchar(500) (not null)
+- password: varchar(50) (not null)
+- createdAt: DateTime // UTC format
+- updatedAt: DateTime // UTC format
+
+car
+- id: char(36) (PK)
+- name: varchar(150) (not null, unique)
+- brand: varchar(150) (not null)
+- description: varchar(100000) (not null)
+
+car_variance
+- id: char(36) (PK)
+- name: varchar(150) (not null, unique)
+- price: decimal(6,0) (not null)
+- carId: char(36) (FK) (not null)
+
+
 ### Register
 Description: To sign up.
 
@@ -282,54 +304,40 @@ Status Code `403 Forbidden`
 }
 ```
 
-## Database Design
-user
-- id: char(36) (PK) // uuid
-- username: varchar(100) (not null, unique)
-- displayUsername: varchar(500) (not null)
-- password: varchar(50) (not null)
-- createdAt: DateTime // UTC format
-- updatedAt: DateTime // UTC format
-
-car
-- id: char(36) (PK)
-- name: varchar(150) (not null, unique)
-- brand: varchar(150) (not null)
-- description: varchar(100000) (not null)
-
-car_variance
-- id: char(36) (PK)
-- name: varchar(150) (not null, unique)
-- price: decimal(6,0) (not null)
-- carId: char(36) (FK) (not null)
-
 ## Architecture Design - Three Layer Architecture
-- app.js (program start from here)
+- app.js 
+    - program start from here
+    - using security packages: helmet, cors, xss-clean, express-rate-limit
+    - using express framework
+    - connect to Mongodb
+    - start the api server
 - Routes
     - AuthenticationRoutes
-    - UserRoutes
-    - CarRoutes
+    - UserRoutes (protected by authentication middleware)
+    - CarRoutes (protected by authentication middleware)
 - Middlewares
-    - AuthenticationMiddleware
-    - ErrorHandleMiddleware
-    - RouteNotFoundMiddleware
+    - AuthenticationMiddleware (retrieve JWT token from request header and decode user id from the token)
+    - ErrorHandleMiddleware (catch all errors in the app, no need try catch block, use express-async-errors package to handle errors)
+    - RouteNotFoundMiddleware (show route not found message)
 - Controllers
-    - AuthenticationController
-    - UserController
-    - CarController
-- Services
-    - AuthenticationService
-    - CarService
-    - UserService
+    - AuthenticationController (api for register, login, logout)
+    - UserController (api for get profile, update profile)
+    - CarController (api for get car list)
+- Services (access database, process data and business logic)
+    - AuthenticationService (register, login, logout)
+    - UserService (get profile, update profile)
+    - CarService (search and sort car)
 - CustomErrors
+    - error message only displayed in development environment
     - index.js (access all errors from this file)
-    - CustomError
-    - BadRequestError
-    - NotFoundError
-    - UnauthenticatedError
-- Models (validation)
-    - User
-    - Car
+    - CustomError (provide http status code and error message)
+    - BadRequestError (inherited from CustomError)
+    - NotFoundError (inherited from CustomError)
+    - UnauthenticatedError (inherited from CustomError)
+- Models (perform input validation)
+    - User (compare password and encrypt password method)
+    - Car (map to JSON method)
+    - JWTToken (generate token, blacklist token, decode token method)
 - Seeder
-    - Seeder (run all seeder at once)
-    - CarSeeder
+    - Seeder (run all seeders in one file)
+    - CarSeeder (insert car data to database)
