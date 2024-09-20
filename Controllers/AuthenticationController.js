@@ -12,7 +12,6 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { username, timestamp, password } = req.body
-
     const userDTOAndToken = await loginService(username, password);
     console.log(`${timestamp} User ${userDTOAndToken.userid} is logined`)
     res.status(StatusCodes.OK).json(userDTOAndToken)

@@ -2,20 +2,20 @@ const { getUserProfileService, updateUserProfileService } = require('../Services
 const { StatusCodes } = require('http-status-codes')
 
 const getUserProfile = async (req, res) => {
-    const { user: { userId } } = req;
+    const { userId } = req;
 
-    userProfileDTO = getUserProfileService(userId);
-    console.log(`${timestamp} Get user profile for user ${userId}`)
+    userProfileDTO = await getUserProfileService(userId);
+    console.log(`${req.body.timestamp} Get user profile for user ${userId}`)
     res.status(StatusCodes.OK).json(userProfileDTO);
 }
 
 const updateUserProfile = async (req, res) => {
-    const { user: { userId } } = req;
+    const { userId } = req;
     const { displayusername, timestamp } = req.body;
 
-    updatedUserProfileDTO = updateUserProfileService(userId, displayusername)
+    updatedUserProfileDTO = await updateUserProfileService(userId, displayusername)
     console.log(`${timestamp} Updated display username '${displayusername}'`)
-    res.status(StatusCodes.OK).json(updateUserProfileDTO);    
+    res.status(StatusCodes.OK).json(updatedUserProfileDTO);    
 }
 
 module.exports = {

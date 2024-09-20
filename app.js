@@ -25,7 +25,6 @@ const carRouter = require('./Routes/CarRoutes');
 const userRouter = require('./Routes/UserRoutes');
 
 // error handler
-const authenticationMiddleware = require('./Middlewares/AuthenticationMiddleware');
 const routeNotFoundMiddleware = require('./Middlewares/RouteNotFoundMiddleware');
 const errorHandleMiddleware = require('./Middlewares/ErrorHandleMiddleware');
 
@@ -51,8 +50,8 @@ app.get('/', (req, res) => {
 
 // routes
 app.use('/api/', authenticationRouter);
-app.use('/api/', authenticationMiddleware, carRouter);
-app.use('/api/', authenticationMiddleware, userRouter);
+app.use('/api/', /*authenticationMiddleware,*/ carRouter);
+app.use('/api/', /*authenticationMiddleware,*/ userRouter);
 
 app.use(routeNotFoundMiddleware);
 app.use(errorHandleMiddleware);
@@ -70,7 +69,7 @@ process.on('uncaughtException', (err) => {
 
 const start = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_DB_URI);
+        await mongoose.connect(process.env.MONGO_DB_URL);
         app.listen(port, () =>
             console.log(`Server is listening on http://localhost:${port}...`)
         );

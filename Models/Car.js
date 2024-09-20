@@ -23,7 +23,7 @@ const carSchema = new mongoose.Schema(
             required: [true, 'Please provide description'],
             maxlength: 100000,
         },
-        carVariances: [{
+        variance: [{
             _id: {
                 type: String,
                 default: uuid.v4
@@ -45,5 +45,57 @@ const carSchema = new mongoose.Schema(
     },
     { timestamps: true }
 )
+
+carSchema.set('toJSON', {
+    transform: (doc, ret) => {
+        ret.id = ret._id;
+        delete ret._id;
+
+        ret.carname = ret.name;
+        delete ret.name;
+
+        delete ret.__v;
+        delete ret.createdAt;
+        delete ret.updatedAt;
+
+        ret.variance = ret.carVariances;
+        ret.variance.id = ret.variance._id;
+        
+        delete ret.variance._id;
+        
+        delete ret.carVairances;
+        
+        return ret;
+    }
+})
+
+carSchema.set('toJSON', {
+    transform: (doc, ret) => {
+        ret.id = ret._id;
+        delete ret._id;
+
+        ret.carname = ret.name;
+        delete ret.name;
+
+        delete ret.__v;
+        delete ret.createdAt;
+        delete ret.updatedAt;
+
+        // Transform the variance array
+        if (Array.isArray(ret.carVariances)) {
+            ret.variance = ret.carVariances.map(variance => {
+                const transformedVariance = { ...variance };
+                transformedVariance.id = transformedVariance._id;
+                delete transformedVariance._id;
+                return transformedVariance;
+            });
+        } else {
+            ret.variance = [];
+        }
+        delete ret.carVariances;
+        
+        return ret;
+    }
+});
 
 module.exports = mongoose.model('Car', carSchema)

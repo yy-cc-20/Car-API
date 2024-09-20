@@ -35,6 +35,11 @@ Install Required Package
 npm install
 ```
 
+Seed Database
+```
+npm run seed
+```
+
 Run API Server
 ```
 npm start

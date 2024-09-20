@@ -4,7 +4,7 @@ const { StatusCodes } = require('http-status-codes')
 const getCarListWithSearchingAndPaging = async (req, res) => {
     const { carname, pageindex, pagesize, timestamp } = req.body;
 
-    carList = getCarListWithSearchingAndPagingService(carname, pageindex, pagesize);
+    carList = await getCarListWithSearchingAndPagingService(carname, pageindex, pagesize);
 
     console.log(`${timestamp} Get car list`)
 

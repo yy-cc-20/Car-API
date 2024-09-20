@@ -2,13 +2,13 @@ const User = require('../Models/User');
 const { NotFoundError } = require('../CustomErrors')
 
 async function getUserProfileService(userId) {
-    const user = await User.findOne({
-        _id: userId,
-    })
+    const user = await User
+        .findOne({ _id: userId })
+        .select('username displayUsername _id')
+
     if (!user) {
         throw new NotFoundError(`No user with id ${userId}`)
     }
-
     return toUserProfileDTO(user);
 }
 
@@ -18,14 +18,13 @@ async function updateUserProfileService(userId, displayUsername) {
         { displayUsername: displayUsername },
         { new: true, runValidators: true }
     )
-
     return toUserProfileDTO(user);
 }
 
 async function toUserProfileDTO(user) {
     return {
         username: user.username,
-        displayusername: user.displayusername,
+        displayusername: user.displayUsername,
         userid: user._id
     };
 }
