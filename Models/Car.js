@@ -58,32 +58,9 @@ carSchema.set('toJSON', {
         delete ret.createdAt;
         delete ret.updatedAt;
 
-        ret.variance = ret.carVariances;
-        ret.variance.id = ret.variance._id;
-        
-        delete ret.variance._id;
-        
-        delete ret.carVairances;
-        
-        return ret;
-    }
-})
-
-carSchema.set('toJSON', {
-    transform: (doc, ret) => {
-        ret.id = ret._id;
-        delete ret._id;
-
-        ret.carname = ret.name;
-        delete ret.name;
-
-        delete ret.__v;
-        delete ret.createdAt;
-        delete ret.updatedAt;
-
         // Transform the variance array
-        if (Array.isArray(ret.carVariances)) {
-            ret.variance = ret.carVariances.map(variance => {
+        if (Array.isArray(ret.variance)) {
+            ret.variance = ret.variance.map(variance => {
                 const transformedVariance = { ...variance };
                 transformedVariance.id = transformedVariance._id;
                 delete transformedVariance._id;
@@ -92,8 +69,7 @@ carSchema.set('toJSON', {
         } else {
             ret.variance = [];
         }
-        delete ret.carVariances;
-        
+
         return ret;
     }
 });

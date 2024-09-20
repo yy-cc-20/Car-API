@@ -3,6 +3,8 @@ const { CustomError } = require('../CustomErrors')
 
 // catch all errors here
 const errorHandlerMiddleware = (err, req, res, next) => {
+    console.log(err.message)
+
     if (process.env.NODE_ENV === 'production')
         return res.status(StatusCodes.FORBIDDEN).json({ errors: "Failed" })
     

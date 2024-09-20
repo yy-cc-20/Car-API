@@ -23,7 +23,7 @@ JWTTokenSchema.statics.generateToken = async function (userId) {
 
 JWTTokenSchema.statics.blacklistToken = async function (token) {
     console.log(token)
-    const existingToken = await this.findOneOrSkip({ token });
+    const existingToken = await this.findOne({ token });
     if (!existingToken) {
         await new Token({ token }).save();
     }

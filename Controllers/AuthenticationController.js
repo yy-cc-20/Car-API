@@ -20,8 +20,8 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
     const token = req.headers.authorization.split(' ')[1]
     logoutService(token)
-    console.log(`${timestamp} User ${req.userId} is logout`)
-    res.status(StatusCodes.OK);
+    console.log(`${req.body.timestamp} User ${req.userId} is logout`)
+    res.status(StatusCodes.NO_CONTENT).json({})
 };
 
 module.exports = {

@@ -27,9 +27,9 @@ async function loginService(username, password) {
 function logoutService(token) {
     const blacklistedToken = JWTToken.findOne({ token });
     if (blacklistedToken) {
-        throw new UnauthenticatedError('Token has been revoked');
-    }
-    JWTToken.blacklistToken(token);
+        console.log('Token has been revoked');
+    } else
+        JWTToken.blacklistToken(token);
 }
 
 module.exports = {

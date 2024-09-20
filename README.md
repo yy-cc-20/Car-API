@@ -144,7 +144,7 @@ Request Body:
   "timestamp": string // UTC time of the operation in ISO 8601 format
 }
 ```
-Success Response: `200 No Content`
+Success Response: `204 No Content`
 
 Failed Response: 
 
