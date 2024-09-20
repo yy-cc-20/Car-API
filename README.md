@@ -330,3 +330,6 @@ car_variance
 - Models (validation)
     - User
     - Car
+- Seeder
+    - Seeder (run all seeder at once)
+    - CarSeeder
