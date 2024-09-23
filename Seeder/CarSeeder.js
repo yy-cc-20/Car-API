@@ -94,31 +94,10 @@ const carList = [
     },
 ];
 
-//async function seedCarData() {
-//    //await mongoose.connect(process.env.MONGO_DB_URL)
-
-//    if (Car.countDocuments() > 0)
-//        return;
-
-//    const batchSize = 100;
-//    const batches = _.chunk(carList, batchSize);
-
-//    // Insert seed data
-//    for (const batch of batches) {
-//        await Car.insertMany(batch);
-//    }
-
-//    console.log('Car data seeded successfully!');
-//}
-
-
-// Function to seed the database
 const seedCarData = async () => {
-    // Optional: Clear existing users
     await Car.deleteMany({});
     console.log('Old cars removed');
 
-    // Insert seed users
     await Car.insertMany(carList);
     console.log('Car data seeded successfully');
 };
