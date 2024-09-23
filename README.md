@@ -72,6 +72,7 @@ car_variance
 - price: decimal(6,0) (not null)
 - carId: char(36) (FK) (not null)
 
+## API Endpoints
 
 ### Register
 Description: To sign up.
@@ -325,9 +326,9 @@ Status Code `403 Forbidden`
 - Services (access database, process data and business logic)
     - AuthenticationService (register, login, logout)
     - UserService (get profile, update profile)
-    - CarService (search and sort car)
+    - CarService (searching and paging)
 - CustomErrors
-    - error message only displayed in development environment
+    - detailed error message only displayed in development environment
     - index.js (access all errors from this file)
     - CustomError (provide http status code and error message)
     - BadRequestError (inherited from CustomError)
