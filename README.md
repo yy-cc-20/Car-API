@@ -21,8 +21,7 @@
 - Backend: Node.js, Express.js
 - Database: MongoDB
 - Password Encryption: bcryptjs
-- Deployment: Docker
-- Three Layer Architecture
+- Architecture: Three Layer Architecture
 
 ## Installation
 Add `.env` file
@@ -334,9 +333,9 @@ Status Code `403 Forbidden`
     - BadRequestError (inherited from CustomError)
     - NotFoundError (inherited from CustomError)
     - UnauthenticatedError (inherited from CustomError)
-- Models (perform input validation)
+- Models (access database and perform input validation)
     - User (compare password and encrypt password method)
-    - Car (map to JSON method)
+    - Car (map Car and its Variance to JSON method)
     - JWTToken (generate token, blacklist token, decode token method)
 - Seeder
     - Seeder (run all seeders in one file)
