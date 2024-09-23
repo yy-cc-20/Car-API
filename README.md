@@ -304,7 +304,7 @@ Status Code `403 Forbidden`
 }
 ```
 
-## Architecture Design - Three Layer Architecture
+## Architecture Design
 - app.js 
     - program start from here
     - using security packages: helmet, cors, xss-clean, express-rate-limit
