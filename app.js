@@ -3,14 +3,9 @@ require('express-async-errors');
 
 // extra security packages
 const helmet = require('helmet');
-const cors = require('cors'); // accessible from different domain
-const xss = require('xss-clean'); // prevent inject malicious code
-const rateLimiter = require('express-rate-limit'); // 
-
-// Swagger
-//const swaggerUI = require('swagger-ui-express');
-//const YAML = require('yamljs');
-//const swaggerDocument = YAML.load('./swagger.yaml');
+const cors = require('cors'); 
+const xss = require('xss-clean'); 
+const rateLimiter = require('express-rate-limit');
 
 // Express framework
 const express = require('express');
@@ -28,8 +23,6 @@ const userRouter = require('./Routes/UserRoutes');
 const routeNotFoundMiddleware = require('./Middlewares/RouteNotFoundMiddleware');
 const errorHandleMiddleware = require('./Middlewares/ErrorHandleMiddleware');
 
-// This line tells Express.js to trust the X-Forwarded-For header, which is often used by proxies or load balancers to identify the original client IP address.
-// Important: Only enable this if you are behind a trusted proxy.Otherwise, it could lead to security vulnerabilities.
 app.set('trust proxy', 1);
 
 app.use(
@@ -43,15 +36,14 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
-//app.get('/', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.get('/', (req, res) => {
     res.send('<h1>Car API</h1>');
 });
 
 // routes
 app.use('/api/', authenticationRouter);
-app.use('/api/', /*authenticationMiddleware,*/ carRouter);
-app.use('/api/', /*authenticationMiddleware,*/ userRouter);
+app.use('/api/', carRouter);
+app.use('/api/', userRouter);
 
 app.use(routeNotFoundMiddleware);
 app.use(errorHandleMiddleware);
