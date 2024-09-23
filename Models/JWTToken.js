@@ -16,8 +16,6 @@ JWTTokenSchema.statics.generateToken = async function (userId) {
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_LIFETIME }
     )
-
-    //console.log(token)
     return token;
 }
 
